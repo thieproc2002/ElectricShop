@@ -25,7 +25,7 @@ export class ByCategoryComponent implements OnInit {
 
   products!: Product[];
   id!: number;
-
+productsBK!: Product[];
   customer!: Customer;
   favorite!: Favorites;
   favorites!: Favorites[];
@@ -103,6 +103,7 @@ export class ByCategoryComponent implements OnInit {
     this.productService.getByCategory(this.id).subscribe(data => {
       this.isLoading = false;
       this.products = data as Product[];
+      this.productsBK = JSON.parse(JSON.stringify(this.products));
     }, error => {
       this.toastr.error('Not Found!', 'System!');
       this.router.navigate(['/home'])
@@ -192,4 +193,56 @@ export class ByCategoryComponent implements OnInit {
     })
   }
 
+  checkboxes = [
+    { value: 'APPLE', checked: true },
+    { value: 'SAMSUNG', checked: true },
+    { value: 'TOSHIBA', checked: true },
+    { value: 'SONY', checked: true },
+    { value: 'LG', checked: true },
+    { value: 'OPPO', checked: true },
+    { value: 'LENOVO', checked: true },
+    { value: 'ELIO', checked: true },
+    { value: 'ACER', checked: true }
+  ];
+
+  // Hàm để kiểm tra hoặc bỏ kiểm tất cả các checkbox
+  toggleAll() {
+    const allCheckbox = document.getElementById('allCheckbox') as HTMLInputElement;
+    const isChecked = allCheckbox.checked;
+    console.log(isChecked)
+    if(isChecked == true){
+      this.checkboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+        this.products =JSON.parse(JSON.stringify(this.productsBK));
+      });
+    }else{
+      this.products = []
+      this.checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+   
+  }
+
+  // Hàm để xử lý khi có sự thay đổi ở các checkbox con
+  checkFilter() {
+    const allCheckbox = document.getElementById('allCheckbox') as HTMLInputElement;
+    const allChecked = this.checkboxes.every(cb => cb.checked);
+   // allCheckbox.checked = allChecked;
+ 
+    this.updateFilteredProducts();
+  }
+  updateFilteredProducts() {
+ 
+   this.page = 1
+   console.log(this.productsBK)
+    this.products =JSON.parse(JSON.stringify(this.productsBK));
+    const selectedValues = this.checkboxes
+      .filter(cb => cb.checked)
+      .map(cb => cb.value.toLowerCase());
+      console.log(this.products)
+      this.products = this.products.filter(product =>
+        selectedValues.some(value => product.name.toLowerCase().includes(value))
+      );
+  }
 }

@@ -194,7 +194,10 @@ export class AllProductComponent implements OnInit {
     { value: 'TOSHIBA', checked: true },
     { value: 'SONY', checked: true },
     { value: 'LG', checked: true },
-    { value: 'OPPO', checked: true }
+    { value: 'OPPO', checked: true },
+    { value: 'LENOVO', checked: true },
+    { value: 'ELIO', checked: true },
+    { value: 'ACER', checked: true }
   ];
 
   // Hàm để kiểm tra hoặc bỏ kiểm tất cả các checkbox

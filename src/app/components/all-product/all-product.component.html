@@ -51,13 +51,8 @@
                         <aside class="widget widget--vendor widget--open-time">
                             <h4 class="widget-title"><i class="icon-clock3"></i>Giờ làm việc</h4>
                             <ul>
-                                <li><strong>Thứ hai:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Thứ ba:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Thứ tư:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Thứ năm:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Thứ Sáu:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Thứ bảy:</strong><span>8:00 am - 9:00 pm</span></li>
-                                <li><strong>Chủ nhật:</strong><span>8:00 am - 9:00 pm</span></li>
+                                <li><strong>Các ngày trong tuần:</strong><span>8:00 am - 9:00 pm</span></li>
+                                
                             </ul>
                         </aside>
                     </figure>
@@ -99,6 +94,7 @@
                                                 <a [routerLink]="['/product-detail/'+item.productId]">
                                                     <img [src]="item.image" alt="" />
                                                 </a>
+                                                <div class="ps-product__badge" *ngIf="item.discount > 0">-{{item.discount}}%</div>
                                                 <ul class="ps-product__actions">
                                                     <li>
                                                         <a href="javascript:void(0);"
