@@ -7,7 +7,7 @@ import { Rate } from '../common/Rate';
 })
 export class RateService {
 
-  url = "http://localhost:8080/api/rates";
+  url = "https://electricshopbe.onrender.com/api/rates";
 
   constructor(private httpClient: HttpClient) { }
 

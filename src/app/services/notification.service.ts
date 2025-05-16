@@ -7,7 +7,7 @@ import { Notification } from '../common/Notification';
 })
 export class NotificationService {
 
-  url = 'http://localhost:8080/api/notification';
+  url = 'https://electricshopbe.onrender.com/api/notification';
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class ProductService {
 
-  url = 'http://localhost:8080/api/products';
+  url = 'https://electricshopbe.onrender.com/api/products';
 
   constructor(private httpClient: HttpClient) { }
 

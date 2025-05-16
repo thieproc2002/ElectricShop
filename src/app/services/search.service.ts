@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SearchService {
-private baseUrl = 'http://localhost:8080/api/products/search';
+private baseUrl = 'https://electricshopbe.onrender.com/api/products/search';
 
   constructor(private http: HttpClient) {}
 

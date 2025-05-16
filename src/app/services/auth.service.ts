@@ -11,7 +11,7 @@ import { Customer } from '../common/Customer';
 })
 export class AuthService {
 
-  url = 'http://localhost:8080/api/auth/';
+  url = 'https://electricshopbe.onrender.com/api/auth/';
 
   constructor(private sessionService: SessionService, private http: HttpClient) { }
 

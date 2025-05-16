@@ -10,8 +10,8 @@ import { contact } from '../common/Contact';
 })
 export class CartService {
 
-  urlCart = 'http://localhost:8080/api/cart';
-  urlCartDetail = 'http://localhost:8080/api/cartDetail';
+  urlCart = 'https://electricshopbe.onrender.com/api/cart';
+  urlCartDetail = 'https://electricshopbe.onrender.com/api/cartDetail';
 
   constructor(private httpClient: HttpClient) { }
 

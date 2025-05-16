@@ -7,7 +7,7 @@ import { Customer } from '../common/Customer';
 })
 export class CustomerService {
 
-  url = "http://localhost:8080/api/auth";
+  url = "https://electricshopbe.onrender.com/api/auth";
 
   constructor(private httpClient: HttpClient) { }
 
