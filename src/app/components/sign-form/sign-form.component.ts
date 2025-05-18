@@ -11,7 +11,8 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { FavoritesService } from 'src/app/services/favorites.service';
 import { SendmailService } from 'src/app/services/sendmail.service';
 import { SessionService } from 'src/app/services/session.service';
-
+import { interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-sign-form',
   templateUrl: './sign-form.component.html',
@@ -28,7 +29,9 @@ export class SignFormComponent implements OnInit {
   isLoginFailed = false;
   roles: string = '';
   otpcode!: any;
-
+otpCountdown = 0;
+  otpTimeout = 60;
+  isOtpDisabled = false; 
   constructor(
     private sendMailService: SendmailService,
     private favoriteService: FavoritesService,
@@ -167,6 +170,7 @@ export class SignFormComponent implements OnInit {
       window.localStorage.setItem("otp", JSON.stringify(data));
 
       this.toastr.success('OTP đã được gửi đến email của bạn !', 'System!');
+      this.startOtpCooldown();
     }, error => {
       if (error.status == 404) {
         this.toastr.error('Email này đã được đăng ký !', 'System!');
@@ -183,6 +187,18 @@ export class SignFormComponent implements OnInit {
       window.location.href = ('/');
     }
   }
+
+startOtpCooldown() {
+    this.isOtpDisabled = true;
+    this.otpCountdown = this.otpTimeout;
+    const timer = setInterval(() => {
+      this.otpCountdown--;
+      if (this.otpCountdown <= 0) {
+        this.isOtpDisabled = false;
+        clearInterval(timer);
+      }
+    }, 1000);
+}
 
   toggle() {
     this.show = !this.show;

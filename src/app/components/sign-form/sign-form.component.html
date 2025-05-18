@@ -81,10 +81,13 @@
                                            class="form-control"
                                            type="text"
                                            placeholder="Nhập mã OTP">
-                                    <a class="btn btn-warning" style="font-size: 14px;"
-                                       (click)="registerForm.get('email')?.valid ? sendOtp() : sendError()">
-                                        <span>Lấy mã OTP bằng email</span>
-                                    </a>
+                                    <a class="btn btn-warning" 
+   [ngClass]="{'disabled': isOtpDisabled}" 
+   (click)="!isOtpDisabled && registerForm.get('email')?.valid ? sendOtp() : sendError()"
+   style="font-size: 14px;">
+   <span *ngIf="otpCountdown <= 0">Lấy mã OTP bằng email</span>
+   <span *ngIf="otpCountdown > 0">Chờ {{otpCountdown}}s</span>
+</a>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Tên</label>
