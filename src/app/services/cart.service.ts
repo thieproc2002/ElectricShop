@@ -50,7 +50,7 @@ export class CartService {
     return this.httpClient.post(this.urlCartDetail, detail);
   }
   // Viet ke Contact Service
-  urlContact = 'http://localhost:8080/api/contacts';
+  urlContact = 'https://electricshopbe.onrender.com/api/contacts';
 
   postContact(contact: contact) {
     return this.httpClient.post(this.urlContact, contact);

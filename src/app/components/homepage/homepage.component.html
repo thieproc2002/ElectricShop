@@ -72,7 +72,7 @@
             <br>
             <div class="ps-section__content">
                 <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
-                    <div ngxSlickItem *ngFor="let item of productRecommend  | paginate: { itemsPerPage: 10, currentPage: 0}" class="slide">
+                    <div ngxSlickItem *ngFor="let item of productRecommend  | paginate: { itemsPerPage: 20, currentPage: 0}" class="slide">
                         <div class="ps-product">
                             <div class="ps-product__thumbnail">
                                 <a href="javascript:void(0);">
