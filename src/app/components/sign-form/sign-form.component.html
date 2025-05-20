@@ -26,16 +26,20 @@
                                 <form class="form" [formGroup]="loginForm" (ngSubmit)="sign_in()">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input formControlName="email" id="email" class="form-control" type="text" placeholder="Enter your email">
+                                        <input formControlName="email" id="email" class="form-control" type="text"
+                                            placeholder="Enter your email">
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Mật khẩu</label>
-                                        <input formControlName="password" id="password" class="form-control" type="password" [type]="show ? 'text' : 'password'" placeholder="Enter your password">
+                                        <input formControlName="password" id="password" class="form-control"
+                                            type="password" [type]="show ? 'text' : 'password'"
+                                            placeholder="Enter your password">
                                         <a><app-forgot-password></app-forgot-password></a>
                                     </div>
                                     <div class="form-group">
                                         <div class="ps-checkbox">
-                                            <input class="form-control" type="checkbox" (click)="toggle()" id="show-password" name="show-password" />
+                                            <input class="form-control" type="checkbox" (click)="toggle()"
+                                                id="show-password" name="show-password" />
                                             <label for="show-password">Hiện mật khẩu</label>
                                         </div>
                                     </div>
@@ -44,7 +48,7 @@
                                     </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                         <div class="ps-form__footer">
                             <p>Liên hệ:</p>
@@ -60,98 +64,146 @@
                     <div class="ps-tab" id="sign-up">
                         <div class="ps-form__content">
                             <h5>Đăng ký tài khoản</h5>
-                            
+
                             <form class="form" [formGroup]="registerForm" (ngSubmit)="sign_up()">
+                                <!-- Email -->
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.invalid}"
-                                           formControlName="email"
-                                           id="email"
-                                           class="form-control"
-                                           type="text"
-                                           placeholder="Nhập email">
+                                    <input id="email" formControlName="email" class="form-control" type="text"
+                                        [ngClass]="{'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.invalid}"
+                                        placeholder="Nhập email" />
+                                    <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('email')?.errors?.['required']">Email không được bỏ
+                                            trống.</div>
+                                        <div *ngIf="registerForm.get('email')?.errors?.['email']">Email không hợp lệ.
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- OTP -->
                                 <div class="form-group">
                                     <label for="otp">Lấy mã OTP</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('otp')?.touched && registerForm.get('otp')?.invalid}"
-                                           formControlName="otp"
-                                           maxlength="6"
-                                           id="otp"
-                                           name="otp"
-                                           class="form-control"
-                                           type="text"
-                                           placeholder="Nhập mã OTP">
-                                    <a class="btn btn-warning" 
-   [ngClass]="{'disabled': isOtpDisabled}" 
-   (click)="!isOtpDisabled && registerForm.get('email')?.valid ? sendOtp() : sendError()"
-   style="font-size: 14px;">
-   <span *ngIf="otpCountdown <= 0">Lấy mã OTP bằng email</span>
-   <span *ngIf="otpCountdown > 0">Chờ {{otpCountdown}}s</span>
-</a>
+                                    <input id="otp" formControlName="otp" maxlength="6" class="form-control" type="text"
+                                        [ngClass]="{'is-invalid': registerForm.get('otp')?.touched && registerForm.get('otp')?.invalid}"
+                                        placeholder="Nhập mã OTP" />
+                                    <div *ngIf="registerForm.get('otp')?.touched && registerForm.get('otp')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('otp')?.errors?.['required']">Vui lòng nhập mã OTP.
+                                        </div>
+                                        <div *ngIf="registerForm.get('otp')?.errors?.['minlength']">OTP phải có ít nhất
+                                            6 ký tự.</div>
+                                    </div>
+                                    <a class="btn btn-warning" [ngClass]="{'disabled': isOtpDisabled}"
+                                        (click)="!isOtpDisabled && registerForm.get('email')?.valid ? sendOtp() : sendError()"
+                                        style="font-size: 14px;">
+                                        <span *ngIf="otpCountdown <= 0">Lấy mã OTP bằng email</span>
+                                        <span *ngIf="otpCountdown > 0">Chờ {{otpCountdown}}s</span>
+                                    </a>
                                 </div>
+
+                                <!-- Tên -->
                                 <div class="form-group">
                                     <label for="name">Tên</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('name')?.touched && registerForm.get('name')?.invalid}"
-                                           formControlName="name"
-                                           id="name"
-                                           class="form-control"
-                                           type="text"
-                                           placeholder="Tên">
+                                    <input id="name" formControlName="name" class="form-control" type="text"
+                                        [ngClass]="{'is-invalid': registerForm.get('name')?.touched && registerForm.get('name')?.invalid}"
+                                        placeholder="Tên" />
+                                    <div *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('name')?.errors?.['required']">Tên không được để
+                                            trống.</div>
+                                        <div *ngIf="registerForm.get('name')?.errors?.['minlength']">Tên phải có ít nhất
+                                            6 ký tự.</div>
+                                    </div>
                                 </div>
+
+                                <!-- Mật khẩu -->
                                 <div class="form-group">
                                     <label for="pass">Mật khẩu</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.invalid}"
-                                           id="pass"
-                                           [type]="show ? 'text' : 'password'"
-                                           formControlName="password"
-                                           class="form-control"
-                                           type="password"
-                                           placeholder="Mật khẩu">
-                                    <button class="btn btn-warning" style="font-size: 14px;" type="button" (click)="toggle()">
+                                    <input id="pass" [type]="show ? 'text' : 'password'" formControlName="password"
+                                        class="form-control"
+                                        [ngClass]="{'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.invalid}"
+                                        placeholder="Mật khẩu" />
+                                    <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('password')?.errors?.['required']">Mật khẩu không
+                                            được để trống.</div>
+                                        <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Mật khẩu phải
+                                            từ 8 ký tự trở lên.</div>
+                                        <div *ngIf="registerForm.get('password')?.errors?.['pattern']">
+                                            Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt.
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning" style="font-size: 14px;" type="button"
+                                        (click)="toggle()">
                                         <span>Hiện mật khẩu</span>
                                     </button>
                                 </div>
+
+                                <!-- Xác nhận mật khẩu -->
                                 <div class="form-group">
                                     <label for="confirmPassword">Xác nhận mật khẩu</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid}"
-                                           id="confirmPassword"
-                                           [type]="show ? 'text' : 'password'"
-                                           formControlName="confirmPassword"
-                                           class="form-control"
-                                           type="password"
-                                           placeholder="Xác nhận mật khẩu">
-                                  </div>
+                                    <input id="confirmPassword" [type]="show ? 'text' : 'password'"
+                                        formControlName="confirmPassword" class="form-control" [ngClass]="{
+        'is-invalid':
+          registerForm.get('confirmPassword')?.touched &&
+          (registerForm.get('confirmPassword')?.invalid || registerForm.errors?.['passwordMismatch'])
+      }" placeholder="Xác nhận mật khẩu" />
+                                    <div *ngIf="registerForm.get('confirmPassword')?.touched" class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Vui lòng
+                                            nhập lại mật khẩu.</div>
+                                        <div *ngIf="registerForm.errors?.['passwordMismatch']">Mật khẩu xác nhận không khớp.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Số điện thoại -->
                                 <div class="form-group">
                                     <label for="phone">Số điện thoại</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid}"
-                                           formControlName="phone"
-                                           id="phone"
-                                           class="form-control"
-                                           type="text"
-                                           placeholder="Số điện thoại">
+                                    <input id="phone" formControlName="phone" class="form-control" type="text"
+                                        [ngClass]="{'is-invalid': registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid}"
+                                        placeholder="Số điện thoại" />
+                                    <div *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('phone')?.errors?.['required']">Vui lòng nhập số
+                                            điện thoại.</div>
+                                        <div *ngIf="registerForm.get('phone')?.errors?.['minlength']">Số điện thoại phải
+                                            đủ 10 số.</div>
+                                        <div *ngIf="registerForm.get('phone')?.errors?.['pattern']">Số điện thoại không
+                                            hợp lệ.</div>
+                                    </div>
                                 </div>
+
+                                <!-- Địa chỉ -->
                                 <div class="form-group">
                                     <label for="address">Địa chỉ</label>
-                                    <input [ngClass]="{'is-invalid': registerForm.get('address')?.touched && registerForm.get('address')?.invalid}"
-                                           formControlName="address"
-                                           id="address"
-                                           class="form-control"
-                                           type="text"
-                                           placeholder="Địa chỉ">
+                                    <input id="address" formControlName="address" class="form-control" type="text"
+                                        [ngClass]="{'is-invalid': registerForm.get('address')?.touched && registerForm.get('address')?.invalid}"
+                                        placeholder="Địa chỉ" />
+                                    <div *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="registerForm.get('address')?.errors?.['required']">Vui lòng nhập địa
+                                            chỉ.</div>
+                                    </div>
                                 </div>
+
+                                <!-- Nút submit -->
                                 <div class="form-group submit">
                                     <button type="submit" class="ps-btn ps-btn--fullwidth">Đăng ký</button>
                                 </div>
                             </form>
-                            
+
+
+
                         </div>
-                       
+
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<br><br>
 <!-- <div class="ps-newsletter">
     <div class="container">
         <form class="ps-form--newsletter">

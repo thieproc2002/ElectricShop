@@ -38,7 +38,7 @@ export class ProductDetailComponent implements OnInit {
   cart!: Cart;
   cartDetail!: CartDetail;
   cartDetails!: CartDetail[];
-
+  liked!: boolean;
   rates!:Rate[];
   rateAll!:Rate[];
   countRate!:number;
@@ -78,6 +78,7 @@ export class ProductDetailComponent implements OnInit {
     this.getRates();
     this.getTotalLike();
     this.getAllRate();
+    this.isLiked(this.product.productId);
   }
 
   setItemsComment(size: number) {
@@ -136,12 +137,26 @@ export class ProductDetailComponent implements OnInit {
     // Kiểm tra countRate để tránh chia cho 0
     return this.countRate === 0 ? 0 : Math.round(avgRating / this.countRate * 10) / 10;
   }
-  
+  isLiked(id: number) {
+    let email = this.sessionService.getUser();
+    if (email == null) {
+     this.liked = false;
+    }
+    this.favoriteService.getByProductIdAndEmail(id, email).subscribe(data => {
+      if (data == null) {
+        this.liked = false;
+      } else {
+        this.liked = true;
+      }
+    }, error => {
+      this.toastr.error('Có lỗi xảy ra!', 'System!');
+    })
+  }
   toggleLike(id: number) {
     let email = this.sessionService.getUser();
     if (email == null) {
       this.router.navigate(['/sign-form']);
-      this.toastr.info('Please Login To Continue', 'System!');
+      this.toastr.info('Vui lòng đăng nhập để tiếp tục', 'System!');
       return;
     }
     this.favoriteService.getByProductIdAndEmail(id, email).subscribe(data => {
@@ -149,7 +164,7 @@ export class ProductDetailComponent implements OnInit {
         this.customerService.getByEmail(email).subscribe(data => {
           this.customer = data as Customer;
           this.favoriteService.post(new Favorites(0, new Customer(this.customer.userId), new Product(id))).subscribe(data => {
-            this.toastr.success('Add Success!', 'System!');
+            this.toastr.success('Thêm thành công!', 'System!');
             this.favoriteService.getByEmail(email).subscribe(data => {
               this.favorites = data as Favorites[];
               this.favoriteService.setLength(this.favorites.length);
@@ -164,7 +179,7 @@ export class ProductDetailComponent implements OnInit {
       } else {
         this.favorite = data as Favorites;
         this.favoriteService.delete(this.favorite.favoriteId).subscribe(data => {
-          this.toastr.info('Remove From Favorite List!', 'System!');
+          this.toastr.info('Đã xóa khỏi danh sách yêu thích!', 'System!');
           this.favoriteService.getByEmail(email).subscribe(data => {
             this.favorites = data as Favorites[];
             this.favoriteService.setLength(this.favorites.length);
@@ -189,11 +204,11 @@ export class ProductDetailComponent implements OnInit {
     let email = this.sessionService.getUser();
     if (email == null) {
       this.router.navigate(['/sign-form']);
-      this.toastr.info('Please Login To Continue', 'System!');
+      this.toastr.info('Vui lòng đăng nhập để sử dụng giỏ hàng', 'System!');
       return;
     }
     if(this.product.quantity < 1){
-      this.toastr.info('Out Of Stock');
+      this.toastr.info('Sản phẩm đã hết hàng!', 'System!');
       return;
     }
     
@@ -201,13 +216,13 @@ export class ProductDetailComponent implements OnInit {
       this.cart = data as Cart;
       this.cartDetail = new CartDetail(0, 1, price, new Product(productId), new Cart(this.cart.cartId));
       this.cartService.postDetail(this.cartDetail).subscribe(data => {
-        this.toastr.success('Add To Cart Success!', 'System!');
+        this.toastr.success('Đã thêm vào giỏ hàng!', 'System!');
         this.cartService.getAllDetail(this.cart.cartId).subscribe(data => {
           this.cartDetails = data as CartDetail[];
           this.cartService.setLength(this.cartDetails.length);
         })
       }, error => {
-        this.toastr.error('This Products Maybe Out Of Stock!', 'System!');
+        this.toastr.error('Sản phẩm đã hết hàng!', 'System!');
         // this.router.navigate(['/home']);
         // window.location.href = "/";
       })

@@ -108,60 +108,58 @@ otpCountdown = 0;
     return password === confirmPassword ? null : { passwordMismatch: true };
   };
   sign_in() {
-    this.login = this.loginForm.value;
+  this.login = this.loginForm.value;
 
-    this.authService.login(this.login).subscribe(
-      data => {
+  this.authService.login(this.login).subscribe(
+    data => {
+      this.sessionService.saveToken(data.token);
+      this.isLoginFailed = false;
+      this.isLoggedIn = true;
 
-        this.sessionService.saveToken(data.token);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
+      let userTemp: Customer;
+      this.userService.getByEmail(String(this.sessionService.getUser())).subscribe(data => {
+        userTemp = data as Customer;
+        if (userTemp.roles[0].name == 'ROLE_ADMIN') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sai thông tin đăng nhập!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.toastr.error('Sai thông tin đăng nhập', 'System!');
+          this.isLoginFailed = true;
+          this.sessionService.signOut();
+          return;
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Đăng nhập thành công!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.router.navigate(['/home']);
 
-        let userTemp: Customer;
-        this.userService.getByEmail(String(this.sessionService.getUser())).subscribe(data => {
-          userTemp = data as Customer;
-          if (userTemp.roles[0].name == 'ROLE_ADMIN') {
+          setTimeout(() => {
+            window.location.href = ('/');
+          }, 500);
+        }
+      })
+    },
+    error => {
+      const errorMessage = typeof error.error === 'string' ? error.error : error.error?.message;
+      this.toastr.error(errorMessage, 'System!');
+      Swal.fire({
+        icon: 'error',
+        title: 'Đăng nhập thất bại!',
+        text: errorMessage,
+        showConfirmButton: false,
+        timer: 2000
+      })
+      this.isLoginFailed = true;
+    }
+  );
+}
 
-            Swal.fire({
-              icon: 'error',
-              title: 'Sai thông tin đăng nhập!',
-              showConfirmButton: false,
-              timer: 1500
-            })
-            this.toastr.error('Sai thông tin đăng nhập', 'System!');
-
-            this.isLoginFailed = true;
-            this.sessionService.signOut();
-            return;
-          } else {
-            Swal.fire({
-              icon: 'success',
-              title: 'Đăng nhập thành công!',
-              showConfirmButton: false,
-              timer: 1500
-            })
-
-            this.router.navigate(['/home']);
-
-            setTimeout(() => {
-              window.location.href = ('/');
-            },
-              500);
-          }
-        })
-      },
-      error => {
-        this.toastr.error('Invalid Login Information', 'System!');
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed!',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        this.isLoginFailed = true;
-      }
-    );
-  }
 
   sendOtp() {
 

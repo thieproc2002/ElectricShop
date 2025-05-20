@@ -192,7 +192,17 @@ export class ProfileComponent implements OnInit {
       }
     );
 }
+getEstimatedDelivery(orderDate: Date, address: string): Date {
+  const deliveryDate = new Date(orderDate); // clone date
 
+  if (address.toLowerCase().includes('thành phố hồ chí minh') || address.toLowerCase().includes('tp. hồ chí minh')) {
+    deliveryDate.setDate(deliveryDate.getDate() + 2);
+  } else {
+    deliveryDate.setDate(deliveryDate.getDate() + 5);
+  }
+
+  return deliveryDate;
+}
   selectFile!: File;
   url: string = 'https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg';
   image: string = this.url;

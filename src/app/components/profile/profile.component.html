@@ -51,6 +51,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Ngày mua</th>
+                                                <th>Ngày nhận hàng dự kiến</th>
                                                 <th>Thành tiền</th>
                                                 <th>Địa chỉ</th>
                                                 <th>Số điện thoại</th>
@@ -62,6 +63,9 @@
                                             <tr *ngFor="let item of orders | paginate: { itemsPerPage: 5, currentPage: page}, index as i">
                                                 <td>{{i+1}}</td>
                                                 <td style="width: 15%;">{{item.orderDate|date:'dd-MM-yyyy'}}</td>
+                                                <td style="width: 15%;">
+                                                    {{ getEstimatedDelivery(item.orderDate, item.address) | date:'dd-MM-yyyy' }}
+                                                </td>
                                                 <td>{{item.amount|currency:'VND'}}</td>
                                                 <td>{{item.address}}</td>
                                                 <td>{{item.phone}}</td>
